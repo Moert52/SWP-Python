@@ -9,6 +9,6 @@ def zufall(list):
         list.remove(rand)
         arr.append(rand)
     return arr
-
+s
 if __name__ == '__main__':
     print(zufall(list))

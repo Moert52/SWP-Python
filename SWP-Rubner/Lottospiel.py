@@ -1,14 +1,32 @@
 import random
 
-list = [*range(1,46,1)]
 
-def zufall(list):
+
+
+def zufall():
+    list = [*range(1, 46, 1)]
     arr = []
     while len(arr) < 6:
         rand = random.choice(list)
         list.remove(rand)
         arr.append(rand)
     return arr
-s
+
+def statistik():
+    dic = {}
+    for i in range(1,1001):
+        arr = zufall()
+        for x in arr:
+            if x in dic:
+                dic[x] = dic[x] + 1
+            else:
+                dic.update({x:1})
+    return dic
+
 if __name__ == '__main__':
-    print(zufall(list))
+    #print(zufall())
+
+    for x, y in sorted(statistik().items()):
+        print(x, y)
+
+

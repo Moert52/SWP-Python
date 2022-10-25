@@ -46,9 +46,10 @@ def statistik(anzahl=100000, anz=5):
                 dic[x] = dic[x] + 1
             else:
                 dic.update({x:1})
+    for i in dic:
+
+        dic[i] = round((dic[i] / anzahl) * 100, 4)
     return dict( sorted(dic.items(), key=operator.itemgetter(1),reverse=True))
-
-
 
 
 def kombination(karten):
@@ -57,8 +58,11 @@ def kombination(karten):
         zahlen.append(i[0])
     for i in karten:
         k = i[0]
-
-        if zahlen.count(k) == 4:
+        if check_royal_flush(karten):
+            return 'Royal flush'
+        elif check_straigt_flush(karten):
+            return 'Straight flush'
+        elif zahlen.count(k) == 4:
             return 'Four of a kind'
         elif check_full_house(zahlen):
             return 'Full House'
@@ -74,6 +78,8 @@ def kombination(karten):
             return 'Pair'
     return "High Card"
 
+
+
 def check_straight(karten):
     dic = {}
     for i in karten:
@@ -87,8 +93,26 @@ def check_straight(karten):
         return True
     elif set(karten) == set([1,13,12,11,10]):
         return True
-    else:
-        return False
+    return False
+
+def check_straigt_flush(karten):
+    zahlen = []
+    if check_flush(karten):
+        for i in karten:
+            zahlen.append(i[0])
+        if check_straight(zahlen):
+            return True
+    return False
+
+
+def check_royal_flush(karten):
+    zahlen = []
+    if check_flush(karten):
+        for i in karten:
+            zahlen.append(i[0])
+        if set(zahlen) == set([1,13,12,11,10]):
+            return True
+    return False
 
 def check_flush(karten):
     dic = {}
@@ -113,8 +137,7 @@ def check_two_pair(karten):
             dic.update({i: 1})
     if sorted(dic.values()) == [1,2,2]:
         return True
-    else:
-        return False
+    return False
 
 def check_full_house(karten):
     dic = {}
@@ -125,17 +148,18 @@ def check_full_house(karten):
             dic.update({i: 1})
     if sorted(dic.values()) == [2, 3]:
         return True
-    else:
-        return False
+    return False
+
 def gesamt_kombis(statistik):
+
     for i in statistik:
-        print(i +' : ' + str(statistik[i]))
+        print(i +' : ' + str(statistik[i]) + ' %')
 
 
 if __name__ == '__main__':
 
-    gesamt_kombis(statistik())
-    #check_flush([(8, ('8', 'Herz')), (6, ('6', 'Herz')), (8, ('8', 'Herz')), (7, ('7', 'Herz')), (6, ('6', 'Herz'))])
+    gesamt_kombis(statistik(400000))
+    #check_straigt_flush([(1, ('1', 'Herz')), (13, ('13', 'Herz')), (12, ('12', 'Herz')), (11, ('11', 'Herz')), (10, ('10', 'Herz'))])
     #check_straight([1,13,11,12,10])
     #check_full_house([1,1,1,3,3])
     #print(model_poker())

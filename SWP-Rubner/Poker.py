@@ -46,10 +46,7 @@ def statistik(anzahl=100000, anz=5):
                 dic[x] = dic[x] + 1
             else:
                 dic.update({x:1})
-    for i in dic:
-
-        dic[i] = round((dic[i] / anzahl) * 100, 4)
-    return dict( sorted(dic.items(), key=operator.itemgetter(1),reverse=True))
+    return dict( sorted(dic.items(), key=operator.itemgetter(1),reverse=True)), anzahl
 
 
 def kombination(karten):
@@ -151,14 +148,17 @@ def check_full_house(karten):
     return False
 
 def gesamt_kombis(statistik):
-
-    for i in statistik:
-        print(i +' : ' + str(statistik[i]) + ' %')
-
+    stat = statistik[0]
+    pstat = statistik[1]
+    for i in stat:
+        print(i +' : ' + str(stat[i]))
+    print('#######################################')
+    for i in stat:
+        print(i +' : ' + str(round((stat[i] / pstat) * 100, 5)) + ' %')
 
 if __name__ == '__main__':
 
-    gesamt_kombis(statistik(400000))
+    gesamt_kombis(statistik(600000))
     #check_straigt_flush([(1, ('1', 'Herz')), (13, ('13', 'Herz')), (12, ('12', 'Herz')), (11, ('11', 'Herz')), (10, ('10', 'Herz'))])
     #check_straight([1,13,11,12,10])
     #check_full_house([1,1,1,3,3])

@@ -153,9 +153,27 @@ def gesamt_kombis(statistik):
     for i in stat:
         print(i +' : ' + str(stat[i]))
     print('#######################################')
+    print('Errechnete prozentueller Anteil: ')
     for i in stat:
         print(i +' : ' + str(round((stat[i] / pstat) * 100, 5)) + ' %')
+    print('#######################################')
+    print('Richtige prozentueller Anteil: ')
+    for i in richtigeAnteile:
+        print(i)
 
+#https://www.888poker.de/magazine/strategy/wahrscheinlichkeit-nutzen-poker
+richtigeAnteile = [
+'High Card		50.1177%',
+'One Pair		42.2569%',
+'Two Pair		4.7539%',
+'3-of-a-Kind	2.1128%',
+'Straight		0.3925%',
+'Flush			0.1965%',
+'Full House		0.1441%',
+'4-of-a-Kind	0.0240%',
+'Straight Flush	0.00139%',
+'Royal Flush	0.000154%'
+]
 if __name__ == '__main__':
 
     gesamt_kombis(statistik(600000))

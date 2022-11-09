@@ -149,36 +149,33 @@ def check_full_house(karten):
 
 def gesamt_kombis(statistik):
     stat = statistik[0]
-    pstat = statistik[1]
+    anz = statistik[1]
     for i in stat:
-        print(i +' : ' + str(stat[i]))
-    print('#######################################')
-    print('Errechnete prozentueller Anteil: ')
-    for i in stat:
-        print(i +' : ' + str(round((stat[i] / pstat) * 100, 5)) + ' %')
-    print('#######################################')
-    print('Richtige prozentueller Anteil: ')
-    for i in richtigeAnteile:
-        print(i)
+        print('%s:\nAnzahl: %d \t Errechnete Prozent: %s  %% \t Richtige Prozent: %s  ' %
+              (i, stat[i], str(round((stat[i] / anz) * 100, 4)), richtigeAnteile[i]))
+        print('##############################################################################')
 
 #https://www.888poker.de/magazine/strategy/wahrscheinlichkeit-nutzen-poker
-richtigeAnteile = [
-'High Card		50.1177%',
-'One Pair		42.2569%',
-'Two Pair		4.7539%',
-'3-of-a-Kind	2.1128%',
-'Straight		0.3925%',
-'Flush			0.1965%',
-'Full House		0.1441%',
-'4-of-a-Kind	0.0240%',
-'Straight Flush	0.00139%',
-'Royal Flush	0.000154%'
-]
-if __name__ == '__main__':
+richtigeAnteile = {
+'High Card'     :'50.1177%',
+'Pair'          :'42.2569%',
+'Two pair'      :'4.7539%',
+'Three of a kind'   :'2.1128%',
+'Straight'      :'0.3925%',
+'Flush'         :'0.1965%',
+'Full House'    :'0.1441%',
+'Four of a kind'   :'0.0240%',
+'Straight flush':'0.00139%',
+'Royal flush'   :'0.000154%'
+}
 
+
+def main():
     gesamt_kombis(statistik(600000))
-    #check_straigt_flush([(1, ('1', 'Herz')), (13, ('13', 'Herz')), (12, ('12', 'Herz')), (11, ('11', 'Herz')), (10, ('10', 'Herz'))])
-    #check_straight([1,13,11,12,10])
-    #check_full_house([1,1,1,3,3])
-    #print(model_poker())
-    #test()
+    # check_straigt_flush([(1, ('1', 'Herz')), (13, ('13', 'Herz')), (12, ('12', 'Herz')), (11, ('11', 'Herz')), (10, ('10', 'Herz'))])
+    # check_straight([1,13,11,12,10])
+    # check_full_house([1,1,1,3,3])
+    # print(model_poker())
+
+if __name__ == '__main__':
+    main()

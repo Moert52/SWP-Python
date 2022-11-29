@@ -1,8 +1,15 @@
 import random
 import json
+import sys
 from os.path import exists
 
+# using flask_restful
+from flask import Flask, jsonify, request
+from flask_restful import Resource, Api
 
+app = Flask(__name__)
+# creating an API object
+api = Api(app)
 
 class Symbol:
 
@@ -13,9 +20,9 @@ class Symbol:
         self.lose1 = lose1
         self.lose2 = lose2
 
-    def lose(self, defeat):
-        if defeat == self.defeat1 or defeat ==self.defeat2:
-            return 1
+    def lose(self, lose):
+        if lose == self.lose1 or lose ==self.lose2:
+            return True
 
     def play(self):
         return self.sym, 1
@@ -26,6 +33,11 @@ class Symbol:
     def __str__(self):
         return f"{self.sym}: \ndefeats ({self.defeat1} and {self.defeat2}) \nloses agains ({self.lose1} and {self.lose2})"
 
+class StatistikWeb(Resource):
+    def get(self):
+        list = readJson()
+        return list
+
 syms = ['Rock', 'Lizard', 'Spock', 'Scrissor', 'Paper']
 
 def onCreate(sym):
@@ -33,26 +45,10 @@ def onCreate(sym):
     if (sym in symbols):
         id=symbols.index(sym)
         #print(symbols)
-        n = id
-        newArr =  symbols[n:] + symbols[:n]
+        newArr =  symbols[id:] + symbols[:id]
         #print(newArr)
         return Symbol(newArr[0],newArr[1],newArr[2],newArr[3],newArr[4])
     return print('Bitte ein gülitges Symbol angeben')
-
-
-
-def Test():
-    print('Willkommen zur erweiteten Version von Schere Stein Papier:\n')
-
-    print('Bitte geben sie ein gültiges Symbol ein:')
-    print('Diese Symbole stehen zur Auswahl: [Stein, Spock, Lizard, Spock, Scrissor, Paper')
-    input1 = input('Ihre Auswahl: ')
-    p1 = onCreate(input1)
-    print(p1)
-
-
-
-
 
 def statistik(user, elem, CountList):
     if user in CountList:
@@ -108,11 +104,11 @@ def game(pwin=0, cwin=0):
             print('Bitte ein gültiges Symbol eingeben ' + str(syms))
 
         player = onCreate(playerInput)
-        comp = onCreate(random.choice(syms))
+        comp = onCreate(calculatedStepForComp())
         comp.getSymComp()
         if player.sym == comp.sym:
             print('\tUnentschieden')
-        elif player.lose(comp):
+        elif player.lose(comp.sym):
             print('\tDie Runde hat der Computer gewonnen')
             cwin +=1
         else:
@@ -135,6 +131,47 @@ def game(pwin=0, cwin=0):
             saveToJson(CountList)
             continue
         round+=1
+
+def count_dic(dic, counter=0):
+    for key in dic:
+        if key != 'Wins':
+            if isinstance(dic[key], int):
+                counter+=dic[key]
+
+    return counter
+
+def getPercOfSym(dic, size):
+    percDic = {}
+    for key in dic:
+        if key != 'Wins':
+            if isinstance(dic[key], int):
+                percDic[key] = round((dic[key] / size) * 100)
+
+    return percDic
+
+def makeSymStep(percDic, start=0):
+    rand = random.randrange(0, count_dic(percDic), 1)
+    for key, value in percDic.items():
+        start+=value
+        if rand <= start:
+            return key
+
+
+def calculatedStepForComp():
+    if exists('data.json'):
+        CountList = readJson()
+        CountList = CountList['Player']
+        lenList = count_dic(CountList)
+        percDic = getPercOfSym(CountList, lenList)
+        return makeSymStep(percDic)
+    return random.choice(syms)
+
+
+
+
+def Test():
+    game()
+    pass
 
 def saveToJson(dic):
     jsFile = json.dumps(dic)
@@ -160,7 +197,7 @@ def main():
           '\tStats - Um die Statistik anzuzeigen')
     while True:
 
-        eingabe = input('Ihre Eingabe (End/Start/Stats: ').capitalize()
+        eingabe = input('Ihre Eingabe (End/Start/Stats): ').capitalize()
         if eingabe == 'End':
             saveToJson(CountList)
             break
@@ -171,8 +208,13 @@ def main():
         else:
             print('Bitte gib einen gültigen Befehl ein')
 
+
+
+api.add_resource(StatistikWeb, '/')
 if __name__ == '__main__':
     main()
+    #Test()
+
 
 
 

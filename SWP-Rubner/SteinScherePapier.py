@@ -2,6 +2,7 @@ import random
 import json
 import sys
 from os.path import exists
+import webbrowser
 
 # using flask_restful
 from flask import Flask, jsonify, request
@@ -10,6 +11,8 @@ from flask_restful import Resource, Api
 app = Flask(__name__)
 # creating an API object
 api = Api(app)
+
+CountList = {}
 
 class Symbol:
 
@@ -86,7 +89,6 @@ def restart():
 def savePlayedSymbols(player, comp, CountList):
     statistik('Player',player.sym, CountList)
     statistik('Computer', comp.sym, CountList)
-
 
 def game(pwin=0, cwin=0):
     if exists('data.json'):
@@ -190,6 +192,7 @@ def stats(CountList):
 
 
 def main():
+    global CountList
     CountList = readJson()
     print('Folgende Befehle gibt es: \n'
           '\tEnd - Zum Beenden des Programmes\n'
@@ -210,9 +213,12 @@ def main():
 
 
 
+
 api.add_resource(StatistikWeb, '/')
 if __name__ == '__main__':
+    #webbrowser.open('https://globalportfolio-one.com/')
     main()
+    print(CountList)
     #Test()
 
 

@@ -218,7 +218,7 @@ api.add_resource(StatistikWeb, '/')
 if __name__ == '__main__':
     #webbrowser.open('https://globalportfolio-one.com/')
     main()
-    print(CountList)
+
     #Test()
 
 

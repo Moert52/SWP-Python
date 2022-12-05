@@ -4,6 +4,7 @@ import sys
 from os.path import exists
 import webbrowser
 
+
 # using flask_restful
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
@@ -91,7 +92,8 @@ def savePlayedSymbols(player, comp, CountList):
     statistik('Computer', comp.sym, CountList)
 
 def game(pwin=0, cwin=0):
-    if exists('data.json'):
+    global CountList
+    if exists('../data.json'):
         CountList = readJson()
     round = 1
     print('Willkommen zur erweiteten Version von Schere Stein Papier:\n')
@@ -160,7 +162,7 @@ def makeSymStep(percDic, start=0):
 
 
 def calculatedStepForComp():
-    if exists('data.json'):
+    if exists('../data.json'):
         CountList = readJson()
         CountList = CountList['Player']
         lenList = count_dic(CountList)
@@ -177,11 +179,11 @@ def Test():
 
 def saveToJson(dic):
     jsFile = json.dumps(dic)
-    with open("data.json", "w") as file:
+    with open("../data.json", "w") as file:
         file.write(jsFile)
 
 def readJson():
-    with open('data.json', 'r') as file:
+    with open('../data.json', 'r') as file:
         return json.load(file)
 
 def stats(CountList):
@@ -197,10 +199,11 @@ def main():
     print('Folgende Befehle gibt es: \n'
           '\tEnd - Zum Beenden des Programmes\n'
           '\tStart - Zum Starten des Spiels\n'
-          '\tStats - Um die Statistik anzuzeigen')
+          '\tStats - Um die Statistik anzuzeigen\n'
+          '\tWebsite - um die Statistik auf dem Webserver anschauen')
     while True:
 
-        eingabe = input('Ihre Eingabe (End/Start/Stats): ').capitalize()
+        eingabe = input('Ihre Eingabe (End/Start/Stats/Website): ').capitalize()
         if eingabe == 'End':
             saveToJson(CountList)
             break
@@ -208,6 +211,9 @@ def main():
             game()
         elif eingabe == 'Stats':
             stats(CountList)
+        elif eingabe == 'Website':
+            saveToJson(CountList)
+            webbrowser.open('http://127.0.0.1:5000')
         else:
             print('Bitte gib einen gültigen Befehl ein')
 
@@ -216,9 +222,7 @@ def main():
 
 api.add_resource(StatistikWeb, '/')
 if __name__ == '__main__':
-    #webbrowser.open('https://globalportfolio-one.com/')
     main()
-
     #Test()
 
 

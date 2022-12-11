@@ -37,10 +37,6 @@ class Symbol:
     def __str__(self):
         return f"{self.sym}: \ndefeats ({self.defeat1} and {self.defeat2}) \nloses agains ({self.lose1} and {self.lose2})"
 
-class StatistikWeb(Resource):
-    def get(self):
-        list = readJson()
-        return list
 
 syms = ['Rock', 'Lizard', 'Spock', 'Scrissor', 'Paper']
 
@@ -181,6 +177,7 @@ def saveToJson(dic):
     jsFile = json.dumps(dic)
     with open("../data.json", "w") as file:
         file.write(jsFile)
+        #file.close()
 
 def readJson():
     with open('../data.json', 'r') as file:
@@ -220,7 +217,7 @@ def main():
 
 
 
-api.add_resource(StatistikWeb, '/')
+
 if __name__ == '__main__':
     main()
     #Test()

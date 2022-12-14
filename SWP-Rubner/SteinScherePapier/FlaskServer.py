@@ -12,10 +12,11 @@ class StatistikWeb(Resource):
     def get(self):
         dic = ssp.readJson()
         return dic
-api.add_resource(StatistikWeb, '/')
+api.add_resource(StatistikWeb, '/get')
 
 def plotti(axes, dic, user):
-    del dic[user]['Wins']
+    if 'Wins' in dic[user]:
+        del dic[user]['Wins']
     player = dic[user]
     names = list(player.keys())
     values = list(player.values())
@@ -30,7 +31,7 @@ def getDia(dic):
     fig.savefig('static/barplot.png')
     #plt.show()
 
-@app.route('/sym')
+@app.route('/')
 def getSymWebsite():
     dic = ssp.readJson()
     getDia(dic)

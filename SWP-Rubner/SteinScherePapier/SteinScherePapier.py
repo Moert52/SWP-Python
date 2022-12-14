@@ -3,7 +3,8 @@ import json
 import sys
 from os.path import exists
 import webbrowser
-
+import FlaskServer
+import copy
 
 # using flask_restful
 from flask import Flask, jsonify, request
@@ -191,12 +192,12 @@ def stats(CountList):
 
 
 def main():
-    global CountList
     CountList = readJson()
     print('Folgende Befehle gibt es: \n'
           '\tEnd - Zum Beenden des Programmes\n'
           '\tStart - Zum Starten des Spiels\n'
           '\tStats - Um die Statistik anzuzeigen\n'
+          '\tData - Um die Daten and den Server upzuloaden\n'
           '\tWebsite - um die Statistik auf dem Webserver anschauen')
     while True:
 
@@ -207,7 +208,13 @@ def main():
         elif eingabe == 'Start':
             game()
         elif eingabe == 'Stats':
+            CountList = readJson()
             stats(CountList)
+        elif eingabe == 'Data':
+            liste = copy.deepcopy(CountList)
+            saveToJson(liste)
+            FlaskServer.getDia(liste)
+            print('Daten wurden upgeloadet')
         elif eingabe == 'Website':
             saveToJson(CountList)
             webbrowser.open('http://127.0.0.1:5000')

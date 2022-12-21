@@ -80,7 +80,7 @@ def restart():
         if restart == 'Nein':
             return False
         elif restart != 'Ja':
-            print('Bitte geben sie eine eindeutige Antwort von Ja oder Nein an!')
+            print('Bitte geben sie eine eindeutige Antwort (Ja / Nein) an!')
         else:
             return True
 
@@ -201,7 +201,7 @@ def main():
           '\tWebsite - um die Statistik auf dem Webserver anschauen')
     while True:
 
-        eingabe = input('Ihre Eingabe (End/Start/Stats/Website): ').capitalize()
+        eingabe = input('Ihre Eingabe (End/Start/Stats/Data/Website): ').capitalize()
         if eingabe == 'End':
             saveToJson(CountList)
             break

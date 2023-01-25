@@ -73,22 +73,60 @@ class VerketteListe:
             n+=1
         return None
 
+    def delete(self, elem):
+        start = self.startElement
+        s = start.getNextElement() != None
+        s = elem != start.getElement()
+        while start.getNextElement() != None and elem != start.getElement():
+            if elem == start.getNextElement().getElement():
+                if start.getNextElement().getNextElement() != None:
+                    start.setNextElement(start.getNextElement().getNextElement())
+                else:
+                    start.setNextElement(None)
+                break
+            start = start.getNextElement()
+
+    def find(self, elem):
+        start = self.startElement
+        while start.getNextElement() != None:
+            if start.getNextElement().getElement() == elem:
+                return True
+            start = start.getNextElement()
+        return False
 
 
-
+    def insertAfter(self, prevElem, elem):
+        start = self.startElement.getNextElement()
+        while start != None and start.getElement() != prevElem:
+            start = start.getNextElement()
+        newElem = ListenElement(elem)
+        nextElem = start.getNextElement()
+        start.setNextElement(newElem)
+        newElem.setNextElement(nextElem)
 
 
 if __name__ == '__main__':
     Liste = VerketteListe()
     randomlist = random.sample(range(0, 100), 10)
-    elem = randomlist[9]
+    elem = randomlist[5]
     for i in randomlist:
         Liste.addLast(i)
 
     print(Liste.printAllElements())
     print('Index: ' + str(Liste.getIndexOfElem(elem)))
-    print('Elem: ' + str(Liste.getElementbyIndex((Liste.getIndexOfElem(elem)))))
+    print('Element: ' + str(Liste.getElementbyIndex((Liste.getIndexOfElem(elem)))))
     print('Länge: ' + str(Liste.getLength()))
+    print('Found?: ' + str(Liste.find(elem)))
+    print('Found?: ' + str(Liste.find(99)))
+    Liste.delete(elem)
+    print(Liste.printAllElements())
+    print('Länge: ' + str(Liste.getLength()))
+    prev = randomlist[4]
+    Liste.insertAfter(prev, elem)
+    print(Liste.printAllElements())
+    print('Länge: ' + str(Liste.getLength()))
+
+
 
 
 

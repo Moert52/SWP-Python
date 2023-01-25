@@ -5,6 +5,7 @@ from os.path import exists
 import webbrowser
 import FlaskServer
 import copy
+import requests
 
 # using flask_restful
 from flask import Flask, jsonify, request
@@ -88,8 +89,7 @@ def savePlayedSymbols(player, comp, CountList):
     statistik('Player',player.sym, CountList)
     statistik('Computer', comp.sym, CountList)
 
-def game(pwin=0, cwin=0):
-    global CountList
+def game(CountList, pwin=0, cwin=0):
     if exists('../data.json'):
         CountList = readJson()
     round = 1
@@ -120,6 +120,7 @@ def game(pwin=0, cwin=0):
         print(f'Aktueller Stand des Spieles | Runde: {round}\n'
               f'Player: {pwin} | {cwin} :Computer')
         saveToJson(CountList)
+        #print(CountList)
         win= checkWin(pwin,cwin, CountList)
 
         if win==False:
@@ -132,6 +133,7 @@ def game(pwin=0, cwin=0):
             saveToJson(CountList)
             continue
         round+=1
+    return CountList
 
 def count_dic(dic, counter=0):
     for key in dic:
@@ -206,15 +208,21 @@ def main():
             saveToJson(CountList)
             break
         elif eingabe == 'Start':
-            game()
+            CountList = game(CountList)
         elif eingabe == 'Stats':
             CountList = readJson()
             stats(CountList)
         elif eingabe == 'Data':
-            liste = copy.deepcopy(CountList)
-            saveToJson(liste)
-            FlaskServer.getDia(liste)
-            print('Daten wurden upgeloadet')
+            print(CountList)
+            saveToJson(CountList)
+
+            with app.app_context():
+                res = requests.post("http://127.0.0.1:5000/server", data=json.dumps(CountList))
+
+            if res.status_code == 200:
+                print("\nDaten wurden upgeloadet\n")
+            else:
+                print('Daten wurden nicht upgeloadet')
         elif eingabe == 'Website':
             saveToJson(CountList)
             webbrowser.open('http://127.0.0.1:5000')
@@ -226,6 +234,7 @@ def main():
 
 
 if __name__ == '__main__':
+
     main()
     #Test()
 

@@ -1,5 +1,7 @@
 from flask import Flask, jsonify, request, render_template
 from flask_restful import Resource, Api
+import requests
+import json
 from matplotlib import pyplot as plt
 import datetime
 import SteinScherePapier as ssp
@@ -9,10 +11,26 @@ app = Flask(__name__, template_folder='templates')
 api = Api(app)
 
 class StatistikWeb(Resource):
+    def post(self):
+        data = request.get_json(force=True)
+        saveToJson(data)
+        getDia(readJson())
+        print(data)
+
     def get(self):
-        dic = ssp.readJson()
+        dic = readJson()
         return dic
-api.add_resource(StatistikWeb, '/get')
+api.add_resource(StatistikWeb, '/server')
+
+def readJson():
+    with open('../server.json', 'r') as file:
+        return json.load(file)
+
+def saveToJson(dic):
+    jsFile = json.dumps(dic)
+    with open("../server.json", "w") as file:
+        file.write(jsFile)
+        #file.close()
 
 def plotti(axes, dic, user):
     if 'Wins' in dic[user]:
@@ -33,16 +51,19 @@ def getDia(dic):
 
 @app.route('/')
 def getSymWebsite():
-    dic = ssp.readJson()
+    dic = readJson()
     getDia(dic)
     date = datetime.datetime.now()
     date = date.strftime("%c")
     return render_template('getSym.html', date=date)
 
 def main():
-    dic = ssp.readJson()
+    dic = readJson()
     getDia(dic)
     app.run(debug=True)  # debug=True lädt nach den Änderungen neu
+
+
+
 
 
 

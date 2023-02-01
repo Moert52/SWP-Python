@@ -116,8 +116,8 @@ if __name__ == '__main__':
     print('Index: ' + str(Liste.getIndexOfElem(elem)))
     print('Element: ' + str(Liste.getElementbyIndex((Liste.getIndexOfElem(elem)))))
     print('Länge: ' + str(Liste.getLength()))
-    print('Found?: ' + str(Liste.find(elem)))
-    print('Found?: ' + str(Liste.find(99)))
+    print('Found Element %s: %s' % (elem, str(Liste.find(elem))))#
+    print('Found Element %s: %s' % (99, str(Liste.find(99))))
     Liste.delete(elem)
     print(Liste.printAllElements())
     print('Länge: ' + str(Liste.getLength()))

@@ -75,8 +75,7 @@ class VerketteListe:
 
     def delete(self, elem):
         start = self.startElement
-        s = start.getNextElement() != None
-        s = elem != start.getElement()
+
         while start.getNextElement() != None and elem != start.getElement():
             if elem == start.getNextElement().getElement():
                 if start.getNextElement().getNextElement() != None:

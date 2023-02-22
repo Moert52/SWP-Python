@@ -93,9 +93,10 @@ class DoppeltVerketteListe:
             if elem == start.getNextElement().getElement():
                 if start.getNextElement().getNextElement() != None:
                     start.setNextElement(start.getNextElement().getNextElement())
+                    start.getNextElement().setPreviousElement(start)
                 else:
                     start.setNextElement(None)
-                break
+                    break
             start = start.getNextElement()
 
     def find(self, elem):
@@ -119,6 +120,17 @@ class DoppeltVerketteListe:
             newElem.setNextElement(nextElem)
             newElem.setPreviousElement(pointer)
 
+    def insertBefore(self, nextItem, elem):
+        pointer = self.startElement.getNextElement()
+        newElem = ListenElement(elem)
+        while pointer != None:
+            if pointer.getElement() == nextItem:
+                newElem.setPreviousElement(pointer.getPreviousElement())
+                pointer.getPreviousElement().setNextElement(newElem)
+                pointer.setPreviousElement(newElem)
+                newElem.setNextElement(pointer)
+            pointer = pointer.getNextElement()
+
 
 
 if __name__ == '__main__':
@@ -138,7 +150,9 @@ if __name__ == '__main__':
     print(Liste.printAllElements())
     print('Länge: ' + str(Liste.getLength()))
     prev = randomlist[4]
+    before = randomlist[7]
     Liste.insertAfter(prev, elem)
+    Liste.insertBefore(before, elem)
     print(Liste.printAllElements())
     print('Länge: ' + str(Liste.getLength()))
 

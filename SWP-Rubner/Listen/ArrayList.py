@@ -1,4 +1,5 @@
 import random
+from ArrayList_Decorator import Decorator
 
 
 class ArrayList:
@@ -7,8 +8,9 @@ class ArrayList:
         self.list = [None]*5
         self.numElements = 0
 
+    @Decorator.getLastElement
     def getLastElement(self):
-        return self.list[self.numElements-1]
+        return 'Last Element: '
 
     def addLast(self, element):
         if self.numElements >= len(self.list):
@@ -20,37 +22,32 @@ class ArrayList:
         self.numElements += 1
         return self.list
 
-
+    @Decorator.getLength
     def getLength(self):
-        return len(self.list)
+        return 'Länge: '
 
-    def printAllElements(self):
-        getAll = '| '
-        for i in self.list:
-            getAll += str(i)+' | '
-        return getAll
+    @Decorator.printAllElements
+    def __str__(self):
+        return self.list
 
 
+    @Decorator.getIndexOfElem
     #get the index of the first elem
     def getIndexOfElem(self, elem,  n=0):
-        if self.list[n] != None:
-            if self.list[n] == elem:
-                return n
-            n+=1
-            return self.getIndexOfElem(elem,n)
-        pass
+        return 'Index: '
 
-
+    @Decorator.getElementbyIndex
     def getElementbyIndex(self, index):
-        return self.list[index]
+        return 'Element: '
 
+    @Decorator.delete
     def delete(self, index):
-        self.list.pop(index)
-
+        return
+    @Decorator.find
     def find(self, elem):
-        pass
+        return 'Found Element '
 
-
+    @Decorator.add
     def insertAfter(self, prevElem, elem):
         pass
 
@@ -62,21 +59,20 @@ if __name__ == '__main__':
     for i in randomlist:
         Liste.addLast(i)
 
-    print(Liste.printAllElements())
-    print('Last Element: ' + str(Liste.getLastElement()))
-    print('Index: ' + str(Liste.getIndexOfElem(elem)))
-    print('Element: ' + str(Liste.getElementbyIndex((Liste.getIndexOfElem(elem)))))
-    print('Länge: ' + str(Liste.getLength()))
-    print('Found Element %s: %s' % (elem, str(Liste.find(elem))))#
-    print('Found Element %s: %s' % (99, str(Liste.find(99))))
+    print(Liste)
+    Liste.getLastElement()
+    Liste.getIndexOfElem(elem)
+    Liste.getElementbyIndex((Liste.getIndexOfElem(elem)))
+    Liste.getLength()
+    Liste.find(elem)
+    Liste.find(99)
     Liste.delete(Liste.getIndexOfElem(elem))
-    print(Liste.printAllElements())
-    print('Länge: ' + str(Liste.getLength()))
+    print(Liste)
+    Liste.getLength()
     prev = randomlist[4]
     Liste.insertAfter(prev, elem)
-    print(Liste.printAllElements())
-    print('Länge: ' + str(Liste.getLength()))
-
+    print(Liste)
+    Liste.getLength()
 
 
 

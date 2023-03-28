@@ -28,10 +28,7 @@ class DoppeltVerketteListe:
         self.lastElement.setPreviousElement(self.startElement)
 
     def getFirstElement(self):
-        first = self.startElement
-        while first.nextElement != None:
-            first = first.getNextElement()
-        return first
+        return self.startElement.getNextElement().getElement()
 
     def getLastElement(self):
         return self.lastElement.getPreviousElement()
@@ -141,6 +138,7 @@ if __name__ == '__main__':
         Liste.addLast(i)
 
     print(Liste.printAllElements())
+    print('First Elem: ' + str(Liste.getFirstElement()))
     print('Index: ' + str(Liste.getIndexOfElem(elem)))
     print('Element: ' + str(Liste.getElementbyIndex((Liste.getIndexOfElem(elem)))))
     print('Länge: ' + str(Liste.getLength()))

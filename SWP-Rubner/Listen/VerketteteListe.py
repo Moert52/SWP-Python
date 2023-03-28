@@ -103,6 +103,9 @@ class VerketteListe:
         start.setNextElement(newElem)
         newElem.setNextElement(nextElem)
 
+    def getFirstElemen(self):
+        return self.startElement.getNextElement().getElement()
+
 
 if __name__ == '__main__':
     Liste = VerketteListe()
@@ -111,6 +114,7 @@ if __name__ == '__main__':
     for i in randomlist:
         Liste.addLast(i)
 
+    print(Liste.getFirstElemen())
     print(Liste.printAllElements())
     print('Index: ' + str(Liste.getIndexOfElem(elem)))
     print('Element: ' + str(Liste.getElementbyIndex((Liste.getIndexOfElem(elem)))))

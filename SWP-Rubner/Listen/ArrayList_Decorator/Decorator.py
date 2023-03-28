@@ -1,3 +1,4 @@
+
 def getLastElement(func):
     def wrapper(*args, **kwargs):
         t = args[0]
